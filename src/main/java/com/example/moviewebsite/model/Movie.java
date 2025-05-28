@@ -32,4 +32,7 @@ public class Movie {
 
     @Column(nullable = false)
     private String duration;
+
+    @Column(nullable = false)
+    private String trailerLink;
 }

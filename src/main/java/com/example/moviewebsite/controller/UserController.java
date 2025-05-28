@@ -1,9 +1,12 @@
 package com.example.moviewebsite.controller;
 
 import com.example.moviewebsite.controller.request.CreateUserRequestDTO;
+import com.example.moviewebsite.controller.request.LoginUserRequestDTO;
 import com.example.moviewebsite.controller.response.GetUserResponseDTO;
 import com.example.moviewebsite.service.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,10 +16,21 @@ import java.util.List;
 public class UserController {
     private UserServiceImpl userServiceImpl;
 
-    // Endpoint to create a new user
-    @PostMapping(value = "/users")
-    public void createUser(@RequestBody CreateUserRequestDTO createUserRequest) {
-        userServiceImpl.saveUser(createUserRequest);
+    // Endpoint to user registration
+    @PostMapping(value = "/users/signup")
+    public void signup(@RequestBody CreateUserRequestDTO createUserRequest) {
+        userServiceImpl.register(createUserRequest);
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+    @PostMapping(value = "/users/login")
+    public ResponseEntity<?> login(@RequestBody LoginUserRequestDTO loginUserRequestDTO) {
+        try {
+            GetUserResponseDTO userResponseDTO = userServiceImpl.login(loginUserRequestDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(userResponseDTO);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
     }
 
     // Endpoint to get all users

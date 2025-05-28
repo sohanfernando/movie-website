@@ -25,6 +25,7 @@ public class MovieServiceImpl implements MovieService {
         movie.setMovieGenre(createMovieRequest.getMovieGenre());
         movie.setYear(createMovieRequest.getYear());
         movie.setDuration(createMovieRequest.getDuration());
+        movie.setTrailerLink(createMovieRequest.getTrailerLink());
 
         movieRepository.save(movie);
     }
@@ -39,7 +40,8 @@ public class MovieServiceImpl implements MovieService {
                         movie.getMovieDescription(),
                         movie.getMovieGenre(),
                         movie.getYear(),
-                        movie.getDuration()))
+                        movie.getDuration(),
+                        movie.getTrailerLink()))
                 .collect(Collectors.toList());
     }
 
@@ -55,7 +57,8 @@ public class MovieServiceImpl implements MovieService {
                 movie.getMovieDescription(),
                 movie.getMovieGenre(),
                 movie.getYear(),
-                movie.getDuration());
+                movie.getDuration(),
+                movie.getTrailerLink());
     }
 
     @Override

@@ -43,7 +43,8 @@ class MovieControllerIntegrationTest {
                   "movieDescription": "Dreams within dreams.",
                   "movieGenre": "Science Fiction",
                   "year": "2010",
-                  "duration": "148 minutes"
+                  "duration": "148 minutes",
+                  "trailerLink":"https://www.youtube.com/watch?v=YoHD9XEInc0"
                 }
                 """;
 
@@ -60,7 +61,7 @@ class MovieControllerIntegrationTest {
     @Test
     @DisplayName("Fetch all movies")
     public void testGetAllMovies() throws Exception {
-        Movie movie = new Movie(null, "Matrix", "Wachowskis", "A hacker awakens", "Science Fiction", "1999", "136 minutes");
+        Movie movie = new Movie(null, "Matrix", "Wachowskis", "A hacker awakens", "Science Fiction", "1999", "136 minutes", "https://www.youtube.com/watch?v=vKQi3bBA1y8");
         movieRepository.save(movie);
 
         mockMvc.perform(get("/movies"))
@@ -72,7 +73,7 @@ class MovieControllerIntegrationTest {
     @Test
     @DisplayName("Fetch a movie by name")
     public void testGetMovieByName() throws Exception {
-        Movie movie = new Movie(null, "Interstellar", "Christopher Nolan", "Space-time voyage", "Science Fiction", "2014", "169 minutes");
+        Movie movie = new Movie(null, "Interstellar", "Christopher Nolan", "Space-time voyage", "Science Fiction", "2014", "169 minutes", "https://www.youtube.com/watch?v=zSWdZVtXT7E");
         movieRepository.save(movie);
 
         mockMvc.perform(get("/movies/{movie-name}", "Interstellar"))
@@ -84,7 +85,7 @@ class MovieControllerIntegrationTest {
     @Test
     @DisplayName("Delete a movie by ID")
     public void testDeleteMovie() throws Exception {
-        Movie movie = new Movie(null, "The Prestige", "Christopher Nolan", "Magicians and rivalry", "Drama", "2006", "130 minutes");
+        Movie movie = new Movie(null, "The Prestige", "Christopher Nolan", "Magicians and rivalry", "Drama", "2006", "130 minutes", "https://www.youtube.com/watch?v=RLtaA9fFNXU");
         movie = movieRepository.save(movie);
 
         mockMvc.perform(delete("/movies/{movie-id}", movie.getId()))

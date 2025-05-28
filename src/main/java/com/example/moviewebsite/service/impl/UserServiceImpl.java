@@ -1,30 +1,60 @@
 package com.example.moviewebsite.service.impl;
 
 import com.example.moviewebsite.controller.request.CreateUserRequestDTO;
+import com.example.moviewebsite.controller.request.LoginUserRequestDTO;
 import com.example.moviewebsite.controller.response.GetUserResponseDTO;
 import com.example.moviewebsite.model.User;
 import com.example.moviewebsite.repository.UserRepository;
 import com.example.moviewebsite.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Override
-    public void saveUser(CreateUserRequestDTO createUserRequest){
+    public GetUserResponseDTO register(CreateUserRequestDTO createUserRequest){
         User user = new User();
 
         user.setName(createUserRequest.getName());
         user.setEmail(createUserRequest.getEmail());
-        user.setPassword(createUserRequest.getPassword());
+        user.setPassword(passwordEncoder.encode(createUserRequest.getPassword()));
 
         userRepository.save(user);
+
+        return new GetUserResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail()
+        );
+    }
+
+    @Override
+    public GetUserResponseDTO login(LoginUserRequestDTO loginUserRequestDTO) {
+        Optional<User> user = userRepository.findByEmail(loginUserRequestDTO.getEmail());
+
+        if (user.isPresent()) {
+            User foundUser = user.get();
+            if (passwordEncoder.matches(loginUserRequestDTO.getPassword(), foundUser.getPassword())) {
+                return new GetUserResponseDTO(
+                        foundUser.getId(),
+                        foundUser.getName(),
+                        foundUser.getEmail()
+                );
+            } else {
+                throw new RuntimeException("Invalid email or password.");
+            }
+        } else {
+            throw new RuntimeException("Invalid email or password.");
+        }
     }
 
     @Override

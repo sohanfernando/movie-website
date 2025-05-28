@@ -33,6 +33,7 @@ public class MovieRepositoryIntegrationTest {
         inception.setMovieGenre("Science Fiction");
         inception.setYear("2010");
         inception.setDuration("148 minutes");
+        inception.setTrailerLink("https://www.youtube.com/watch?v=YoHD9XEInc0");
 
         interstellar = new Movie();
         interstellar.setMovieName("Interstellar");
@@ -41,6 +42,7 @@ public class MovieRepositoryIntegrationTest {
         interstellar.setMovieGenre("Science Fiction");
         interstellar.setYear("2014");
         interstellar.setDuration("169 minutes");
+        interstellar.setTrailerLink("https://www.youtube.com/watch?v=zSWdZVtXT7E");
 
         movieRepository.save(inception);
         movieRepository.save(interstellar);
@@ -85,6 +87,7 @@ public class MovieRepositoryIntegrationTest {
         newMovie.setMovieGenre("Action");
         newMovie.setYear("2020");
         newMovie.setDuration("150 minutes");
+        newMovie.setTrailerLink("https://www.youtube.com/watch?v=L3pk_TBkihU");
 
         Movie saved = movieRepository.save(newMovie);
 

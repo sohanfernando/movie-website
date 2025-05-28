@@ -13,4 +13,5 @@ public class GetMovieResponseDTO {
     private String movieGenre;
     private String year;
     private String duration;
+    private String trailerLink;
 }
