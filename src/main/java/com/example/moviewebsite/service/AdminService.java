@@ -1,7 +1,10 @@
 package com.example.moviewebsite.service;
 
 import com.example.moviewebsite.controller.request.CreateAdminRequestDTO;
+import com.example.moviewebsite.controller.request.LoginAdminRequestDTO;
+import com.example.moviewebsite.controller.response.GetAdminResponseDTO;
 
 public interface AdminService {
-    void createAdmin(CreateAdminRequestDTO createAdminRequestDTO);
+    GetAdminResponseDTO createAdmin(CreateAdminRequestDTO createAdminRequestDTO);
+    GetAdminResponseDTO adminLogin(LoginAdminRequestDTO loginAdminRequestDTO);
 }
