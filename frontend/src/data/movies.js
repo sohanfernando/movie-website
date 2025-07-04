@@ -1,0 +1,77 @@
+const movies = [
+  {
+    id: "1",
+    title: "The Dark Knight",
+    image: "/images/covers/dark-knight.png",
+    year: "2009",
+    genre: "Action",
+    director: "Christopher Nolan",
+    duration: "152 minutes",
+    description: `Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, 
+    Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves effective, 
+    but they soon find themselves prey to a reign of chaos unleashed by a criminal mastermind known to Gotham as the Joker.`,
+    trailerUrl: "https://www.youtube.com/watch?v=LDG9bisJEaI",
+  },
+  {
+    id: "2",
+    title: "The Avengers Endgame",
+    image: "/images/covers/avengers.png",
+    year: "2019",
+    genre: "Action/Sci-fi",
+    director: "Anthony Russo, Joe Russo",
+    duration: "181 minutes",
+    description: `After the devastating events of Infinity War, the universe is in ruins. With the help of remaining allies, 
+    the Avengers assemble once more to reverse Thanos' actions and restore balance to the universe.`,
+    trailerUrl: "https://www.youtube.com/watch?v=TcMBFSGVi1c",
+  },
+  {
+    id: "3",
+    title: "The Martian",
+    image: "/images/covers/the-martian.png",
+    year: "2015",
+    genre: "Sci-fi/Drama",
+    director: "Ridley Scott",
+    duration: "144 minutes",
+    description: `An astronaut becomes stranded on Mars after his team assumes him dead. With limited supplies, he must find a way 
+    to survive and signal to Earth that he is alive.`,
+    trailerUrl: "https://www.youtube.com/watch?v=ej3ioOneTy8",
+  },
+  {
+    id: "4",
+    title: "The Matrix",
+    image: "/images/covers/the-matrix.png",
+    year: "1999",
+    genre: "Sci-fi/Action",
+    director: "The Wachowskis",
+    duration: "136 minutes",
+    description: `A hacker named Neo discovers the truth about his reality and his role in the war against its controllers. 
+    He joins a group of underground rebels in a battle to free humanity from a virtual simulation.`,
+    trailerUrl: "https://www.youtube.com/watch?v=vKQi3bBA1y8",
+  },
+  {
+    id: "5",
+    title: "Joker",
+    image: "/images/covers/joker.png",
+    year: "2019",
+    genre: "Drama/Thriller",
+    director: "Todd Phillips",
+    duration: "122 minutes",
+    description: `In Gotham City, a mentally troubled comedian named Arthur Fleck embarks on a downward spiral of social isolation 
+    and madness that transforms him into the criminal mastermind known as the Joker.`,
+    trailerUrl: "https://www.youtube.com/watch?v=zAGVQLHvwOY",
+  },
+  {
+    id: "6",
+    title: "Black Panther",
+    image: "/images/covers/black-panther.png",
+    year: "2018",
+    genre: "Action/Sci-fi",
+    director: "Ryan Coogler",
+    duration: "134 minutes",
+    description: `T'Challa, heir to the hidden but advanced kingdom of Wakanda, must step forward to lead his people and face a 
+    powerful enemy from his country's past.`,
+    trailerUrl: "https://www.youtube.com/watch?v=xjDjIWPwcPU",
+  },
+];
+
+export default movies;
