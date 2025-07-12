@@ -22,7 +22,7 @@ public class AdminController {
         adminServiceImpl.createAdmin(createAdminRequest);
     }
 
-    @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+    @CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"}, allowCredentials = "true")
     @PostMapping(value = "/admins/admin-login")
     public ResponseEntity<?> adminLogin(@RequestBody LoginAdminRequestDTO loginAdminRequestDTO){
         try {

@@ -67,11 +67,45 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    public GetMovieResponseDTO findMovieById(Long id) {
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Movie not found"));
+
+        return new GetMovieResponseDTO(
+                movie.getId(),
+                movie.getMovieName(),
+                movie.getDirector(),
+                movie.getMovieDescription(),
+                movie.getMovieGenre(),
+                movie.getYear(),
+                movie.getDuration(),
+                movie.getTrailerLink(),
+                movie.getMovieCover());
+    }
+
+    @Override
     public void deleteMovie(Long id) {
         Movie movie = movieRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Movie not found"));
 
         movieRepository.delete(movie);
+    }
+
+    @Override
+    public void updateMovie(Long id, CreateMovieRequestDTO updateMovieRequest) {
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Movie not found"));
+
+        movie.setMovieName(updateMovieRequest.getMovieName());
+        movie.setDirector(updateMovieRequest.getDirector());
+        movie.setMovieDescription(updateMovieRequest.getMovieDescription());
+        movie.setMovieGenre(updateMovieRequest.getMovieGenre());
+        movie.setYear(updateMovieRequest.getYear());
+        movie.setDuration(updateMovieRequest.getDuration());
+        movie.setTrailerLink(updateMovieRequest.getTrailerLink());
+        movie.setMovieCover(updateMovieRequest.getMovieCover());
+
+        movieRepository.save(movie);
     }
 
 }

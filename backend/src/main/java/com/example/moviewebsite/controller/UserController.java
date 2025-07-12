@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"}, allowCredentials = "true")
 @AllArgsConstructor
 @RestController
 public class UserController {
@@ -22,7 +23,6 @@ public class UserController {
         userServiceImpl.register(createUserRequest);
     }
 
-    @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
     @PostMapping(value = "/users/login")
     public ResponseEntity<?> login(@RequestBody LoginUserRequestDTO loginUserRequestDTO) {
         try {

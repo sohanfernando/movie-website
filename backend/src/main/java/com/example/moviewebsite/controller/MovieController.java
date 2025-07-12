@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"})
 @RestController
 @AllArgsConstructor
 public class MovieController {
@@ -27,6 +27,16 @@ public class MovieController {
     @GetMapping(value = "/movies/{movie-name}")
     public GetMovieResponseDTO getMovieByName(@PathVariable("movie-name") String name) {
         return movieServiceImpl.findMovieByName(name);
+    }
+
+    @GetMapping(value = "/movies/id/{movie-id}")
+    public GetMovieResponseDTO getMovieById(@PathVariable("movie-id") Long id) {
+        return movieServiceImpl.findMovieById(id);
+    }
+
+    @PutMapping(value = "/movies/{movie-id}")
+    public void updateMovie(@PathVariable("movie-id") Long id, @RequestBody CreateMovieRequestDTO updateMovieRequest) {
+        movieServiceImpl.updateMovie(id, updateMovieRequest);
     }
 
     @DeleteMapping(value = "/movies/{movie-id}")

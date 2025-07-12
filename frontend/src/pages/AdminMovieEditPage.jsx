@@ -1,10 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AdminSideBar from "../components/AdminSideBar";
 
-const AdminDashboard = () => {
+const AdminMovieEditPage = () => {
+  const { movieId } = useParams();
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+
   const [movieName, setMovieName] = useState("");
   const [director, setDirector] = useState("");
   const [movieDescription, setMovieDescription] = useState("");
@@ -16,8 +19,34 @@ const AdminDashboard = () => {
   const [movieCoverFile, setMovieCoverFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const fileInputRef = useRef(null);
+  useEffect(() => {
+    fetchMovie();
+  }, [movieId]);
+
+  const fetchMovie = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`http://localhost:8080/movies/id/${movieId}`);
+      const movie = response.data;
+      
+      setMovieName(movie.movieName);
+      setDirector(movie.director);
+      setMovieDescription(movie.movieDescription);
+      setMovieGenre(movie.movieGenre);
+      setYear(movie.year);
+      setDuration(movie.duration);
+      setTrailerLink(movie.trailerLink || "");
+      setMovieCover(movie.movieCover || "");
+    } catch (error) {
+      console.error("Error fetching movie:", error);
+      setError("Failed to fetch movie details");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleCoverClick = () => {
     fileInputRef.current.click();
@@ -32,7 +61,7 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleSave = async () => {
+  const handleUpdate = async () => {
     if (!movieName || !director || !movieDescription || !movieGenre || !year || !duration) {
       alert("Please fill in all required fields");
       return;
@@ -42,9 +71,9 @@ const AdminDashboard = () => {
     setSuccessMessage("");
 
     try {
-      let imageUrl = "";
+      let imageUrl = movieCover;
 
-      // Step 1: Upload image file to backend
+      // Step 1: Upload new image file to backend if a new file is selected
       if (movieCoverFile) {
         const formData = new FormData();
         formData.append("file", movieCoverFile);
@@ -56,12 +85,10 @@ const AdminDashboard = () => {
         });
 
         imageUrl = uploadResponse.data.url;
-        console.log("Upload response:", uploadResponse.data); // Debug log
-        console.log("Image URL from backend:", imageUrl); // Debug log
       }
 
-      // Step 2: Save movie with image URL
-      const newMovie = {
+      // Step 2: Update movie with image URL
+      const updatedMovie = {
         movieName,
         director,
         movieDescription,
@@ -72,42 +99,55 @@ const AdminDashboard = () => {
         movieCover: imageUrl,
       };
 
-      await axios.post("http://localhost:8080/movies", newMovie);
-      setSuccessMessage("Movie saved successfully!");
+      await axios.put(`http://localhost:8080/movies/${movieId}`, updatedMovie);
+      setSuccessMessage("Movie updated successfully!");
 
-      // Clear form
-      setMovieName("");
-      setDirector("");
-      setMovieDescription("");
-      setMovieGenre("");
-      setYear("");
-      setDuration("");
-      setTrailerLink("");
-      setMovieCover("");
-      setMovieCoverFile(null);
-
-      // Clear success message after 3 seconds
-      setTimeout(() => setSuccessMessage(""), 3000);
+      // Clear success message after 3 seconds and redirect
+      setTimeout(() => {
+        setSuccessMessage("");
+        navigate("/admin/movie-list");
+      }, 2000);
     } catch (error) {
-      console.error("Error saving movie:", error);
-      alert("Failed to save movie. Please try again.");
+      console.error("Error updating movie:", error);
+      alert("Failed to update movie. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const clearForm = () => {
-    setMovieName("");
-    setDirector("");
-    setMovieDescription("");
-    setMovieGenre("");
-    setYear("");
-    setDuration("");
-    setTrailerLink("");
-    setMovieCover("");
-    setMovieCoverFile(null);
-    setSuccessMessage("");
+  const handleCancel = () => {
+    navigate("/admin/movie-list");
   };
+
+  if (loading) {
+    return (
+      <div className="flex h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+        <AdminSideBar />
+        <div className="flex-1 flex justify-center items-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+        <AdminSideBar />
+        <div className="flex-1 flex justify-center items-center">
+          <div className="text-center text-red-400">
+            <p className="text-xl mb-4">{error}</p>
+            <button
+              onClick={() => navigate("/admin/movie-list")}
+              className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-all duration-200"
+            >
+              Back to Movie List
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
@@ -118,21 +158,15 @@ const AdminDashboard = () => {
         <div className="bg-white/5 backdrop-blur-sm border-b border-white/10 p-6">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold text-white mb-2">Add New Movie</h1>
-              <p className="text-gray-300">Create and manage movie entries for your platform</p>
+              <h1 className="text-3xl font-bold text-white mb-2">Edit Movie</h1>
+              <p className="text-gray-300">Update movie information and details</p>
             </div>
             <div className="flex items-center space-x-4">
               <button
-                onClick={clearForm}
+                onClick={handleCancel}
                 className="px-4 py-2 text-gray-300 hover:text-white border border-gray-600 hover:border-gray-500 rounded-lg transition-all duration-200"
               >
-                Clear Form
-              </button>
-              <button
-                onClick={() => navigate("/admin/movie-list")}
-                className="px-4 py-2 text-gray-300 hover:text-white border border-gray-600 hover:border-gray-500 rounded-lg transition-all duration-200"
-              >
-                View Movie List
+                Cancel
               </button>
               <button 
                 onClick={() => {
@@ -263,87 +297,74 @@ const AdminDashboard = () => {
                     <textarea
                       value={movieDescription}
                       onChange={(e) => setMovieDescription(e.target.value)}
-                      rows="4"
+                      rows={4}
                       className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 resize-none"
                       placeholder="Enter movie description..."
                     />
                   </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex space-x-4 pt-6">
+                    <button
+                      onClick={handleUpdate}
+                      disabled={isLoading}
+                      className="flex-1 bg-orange-600 hover:bg-orange-700 disabled:bg-orange-800 text-white py-3 px-6 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2"
+                    >
+                      {isLoading ? (
+                        <>
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                          <span>Updating...</span>
+                        </>
+                      ) : (
+                        <span>Update Movie</span>
+                      )}
+                    </button>
+                  </div>
                 </div>
 
-                {/* Right Column - Image Upload & Save */}
+                {/* Right Column - Cover Image */}
                 <div className="space-y-6">
-                  {/* Image Upload */}
-                  <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                    <h3 className="text-lg font-semibold text-white mb-4">Movie Cover</h3>
-                    
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-4">
+                      Movie Cover
+                    </label>
                     <div
                       onClick={handleCoverClick}
-                      className="w-full aspect-[3/4] bg-white/10 border-2 border-dashed border-white/20 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-white/15 transition-all duration-200 group"
+                      className="relative w-full h-80 bg-white/10 border-2 border-dashed border-white/20 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-white/30 transition-all duration-200 group"
                     >
                       {movieCover ? (
-                        <div className="relative w-full h-full">
-                          <img 
-                            src={movieCover} 
-                            alt="Movie Cover Preview" 
-                            className="w-full h-full object-cover rounded-lg" 
+                        <>
+                          <img
+                            src={movieCover}
+                            alt="Movie cover preview"
+                            className="w-full h-full object-cover rounded-xl"
                           />
-                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
-                            <span className="text-white font-medium">Click to change</span>
+                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-xl flex items-center justify-center">
+                            <div className="text-center">
+                              <svg className="w-8 h-8 text-white mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                              </svg>
+                              <p className="text-white text-sm">Click to change image</p>
+                            </div>
                           </div>
-                        </div>
+                        </>
                       ) : (
                         <div className="text-center">
-                          <svg className="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                           </svg>
                           <p className="text-gray-400 text-sm">Click to upload cover image</p>
-                          <p className="text-gray-500 text-xs mt-1">JPG, PNG, GIF up to 10MB</p>
+                          <p className="text-gray-500 text-xs mt-1">PNG, JPG, WEBP up to 10MB</p>
                         </div>
                       )}
                     </div>
-                    
                     <input
-                      type="file"
                       ref={fileInputRef}
-                      onChange={handleCoverChange}
+                      type="file"
                       accept="image/*"
+                      onChange={handleCoverChange}
                       className="hidden"
                     />
-                  </div>
-
-                  {/* Save Button */}
-                  <button
-                    onClick={handleSave}
-                    disabled={isLoading}
-                    className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white py-4 px-6 rounded-xl font-semibold text-lg focus:outline-none focus:ring-4 focus:ring-orange-500/30 transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                  >
-                    {isLoading ? (
-                      <div className="flex items-center justify-center space-x-2">
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        <span>Saving Movie...</span>
-                      </div>
-                    ) : (
-                      "Save Movie"
-                    )}
-                  </button>
-
-                  {/* Quick Stats */}
-                  <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                    <h3 className="text-lg font-semibold text-white mb-4">Quick Stats</h3>
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-400">Total Movies</span>
-                        <span className="text-white font-semibold">24</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-400">This Month</span>
-                        <span className="text-white font-semibold">3</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-400">Pending</span>
-                        <span className="text-orange-400 font-semibold">1</span>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -355,4 +376,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default AdminMovieEditPage; 

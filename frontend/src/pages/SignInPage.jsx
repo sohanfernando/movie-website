@@ -38,7 +38,6 @@ const SignIn = () => {
         },
         {
           headers: { "Content-Type": "application/json" },
-          withCredentials: true,
         }
       );
 
@@ -64,70 +63,129 @@ const SignIn = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-orange-600 p-4">
-      <div className="bg-white p-6 md:p-12 rounded-xl flex w-full max-w-5xl shadow-lg">
-        <div className="flex-1 pr-6">
-          <h2 className="text-3xl font-bold text-orange-600 mb-6">Welcome to MovieHub</h2>
-
-          {error && (
-            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded border border-red-300">
-              {error}
+    <div className="min-h-screen bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col lg:flex-row min-h-[600px]">
+        {/* Left side - Form */}
+        <div className="flex-1 p-6 sm:p-8 lg:p-12 flex flex-col justify-center">
+          <div className="max-w-md mx-auto w-full">
+            {/* Header */}
+            <div className="text-center lg:text-left mb-8">
+              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-2">
+                Welcome Back
+              </h1>
+              <p className="text-lg text-gray-600">
+                Sign in to your MovieHub account
+              </p>
             </div>
-          )}
 
-          <form onSubmit={handleLogin} className="space-y-4">
-            <AuthInput
-              label="Email"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              id="email"
-            />
-            <AuthInput
-              label="Password"
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              id="password"
-            />
+            {/* Error Message */}
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-center space-x-3">
+                <div className="flex-shrink-0">
+                  <svg className="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <p className="text-sm text-red-700">{error}</p>
+              </div>
+            )}
 
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center">
-                <input type="checkbox" className="mr-2" />
-                Remember Me
-              </label>
-              <button type="button" className="text-orange-500 hover:underline">
-                Forgot Password?
+            {/* Form */}
+            <form onSubmit={handleLogin} className="space-y-6">
+              <AuthInput
+                label="Email Address"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                id="email"
+              />
+              <AuthInput
+                label="Password"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                id="password"
+              />
+
+              {/* Remember Me & Forgot Password */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-3 sm:space-y-0">
+                <label className="flex items-center cursor-pointer group">
+                  <input 
+                    type="checkbox" 
+                    className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 focus:ring-2" 
+                  />
+                  <span className="ml-2 text-sm text-gray-700 group-hover:text-gray-900 transition-colors">
+                    Remember me
+                  </span>
+                </label>
+                <button 
+                  type="button" 
+                  className="text-sm text-orange-600 hover:text-orange-700 font-medium hover:underline transition-colors"
+                >
+                  Forgot password?
+                </button>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white py-3 px-6 rounded-xl font-semibold text-lg hover:from-orange-700 hover:to-orange-800 focus:outline-none focus:ring-4 focus:ring-orange-300 transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Signing In...</span>
+                  </div>
+                ) : (
+                  "Sign In"
+                )}
               </button>
-            </div>
+            </form>
 
-            <button
-              type="submit"
-              className="w-full bg-orange-600 text-white py-2 rounded-md font-semibold hover:bg-orange-700 transition disabled:opacity-50"
-              disabled={isLoading}
-            >
-              {isLoading ? "Signing In..." : "Sign In"}
-            </button>
-          </form>
 
-          <p className="text-sm mt-4">
-            Don’t have an account?{" "}
-            <Link to="/signup" className="text-orange-600 font-semibold hover:underline">
-              Sign up
-            </Link>
-          </p>
+
+            {/* Sign Up Link */}
+            <p className="text-center mt-8 text-gray-600">
+              Don't have an account?{" "}
+              <Link 
+                to="/signup" 
+                className="text-orange-600 font-semibold hover:text-orange-700 hover:underline transition-colors"
+              >
+                Sign up for free
+              </Link>
+            </p>
+          </div>
         </div>
 
-        <div className="hidden md:block flex-1">
+        {/* Right side - Image */}
+        <div className="flex-1 relative hidden lg:block">
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-600/20 to-orange-800/20 z-10"></div>
           <img
             src={martian}
             alt="The Martian movie poster"
-            className="rounded-lg h-full object-cover"
+            className="w-full h-full object-cover"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent z-20"></div>
+          <div className="absolute bottom-8 left-8 right-8 z-30 text-white">
+            <h3 className="text-2xl font-bold mb-2">Discover Amazing Movies</h3>
+            <p className="text-orange-200">Join thousands of movie enthusiasts</p>
+          </div>
+        </div>
+
+        {/* Mobile Image */}
+        <div className="lg:hidden h-48 relative">
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-600/20 to-orange-800/20 z-10"></div>
+          <img
+            src={martian}
+            alt="The Martian movie poster"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent z-20"></div>
         </div>
       </div>
     </div>
