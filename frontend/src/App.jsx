@@ -10,6 +10,8 @@ import AdminSignUpPage from "./pages/AdminSignUpPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminMovieListPage from "./pages/AdminMovieListPage";
 import AdminMovieEditPage from "./pages/AdminMovieEditPage";
+import AllMoviesPage from "./pages/AllMoviesPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 import { logout } from "./utils/auth";
 
 // Logout component
@@ -27,16 +29,30 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<SignIn />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/movies" element={<AllMoviesPage />} />
         <Route path="/movie/:id" element={<MovieDetailsPage />} />
         <Route path="/about" element={<AboutUsPage />} />
         <Route path="/admin-signup" element={<AdminSignUpPage />} />
         <Route path="/admin-login" element={<AdminLoginPage />} />
-        <Route path="/admin-home" element={<AdminDashboard />} />
-        <Route path="/admin/movie-list" element={<AdminMovieListPage />} />
-        <Route path="/admin/movie/edit/:movieId" element={<AdminMovieEditPage />} />
+        <Route path="/admin-home" element={
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/movie-list" element={
+          <ProtectedRoute>
+            <AdminMovieListPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/movie/edit/:movieId" element={
+          <ProtectedRoute>
+            <AdminMovieEditPage />
+          </ProtectedRoute>
+        } />
         <Route path="/logout" element={<Logout />} />
       </Routes>
     </Router>

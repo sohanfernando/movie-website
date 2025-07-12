@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"}, allowCredentials = "true")
 @RestController
 @AllArgsConstructor
 public class AdminController {
@@ -22,7 +23,6 @@ public class AdminController {
         adminServiceImpl.createAdmin(createAdminRequest);
     }
 
-    @CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"}, allowCredentials = "true")
     @PostMapping(value = "/admins/admin-login")
     public ResponseEntity<?> adminLogin(@RequestBody LoginAdminRequestDTO loginAdminRequestDTO){
         try {

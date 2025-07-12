@@ -45,7 +45,7 @@ const SignIn = () => {
 
       if (response.data) {
         localStorage.setItem("user", JSON.stringify(response.data));
-        navigate("/home");
+        navigate("/");
       } else {
         throw new Error("No data received from server");
       }

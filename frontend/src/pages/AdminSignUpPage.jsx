@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router';
 const AdminSignUpPage = () => {
 
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const [formData, setFormData] = useState({
         name: '',
@@ -23,19 +25,29 @@ const AdminSignUpPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(!formData.agree) return alert("Please agree to terms & conditions");
+        if(!formData.agree) {
+            setError("Please agree to terms & conditions");
+            return;
+        }
+
+        setIsLoading(true);
+        setError(null);
 
         try {
-            await axios.post('http://localhost:8080/admins/admin-signup', {
+            const response = await axios.post('http://localhost:8080/admins/admin-signup', {
                 name: formData.name,
                 email: formData.email,
                 password: formData.password,
             });
-            alert('User registered successfully!');
+            console.log('Admin signup response:', response);
+            alert('Admin account created successfully!');
             navigate('/admin-login');
         } catch (error) {
-            console.error('Signup error:', error)
-            alert('Error during sign up. Please try again.');
+            console.error('Signup error:', error);
+            const errorMessage = error.response?.data?.message || error.response?.data || error.message || 'Error during sign up. Please try again.';
+            setError(errorMessage);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -43,6 +55,12 @@ const AdminSignUpPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-orange-600">
       <div className="bg-white p-10 rounded-xl shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold text-center text-orange-600 mb-6">Admin Account Create</h2>
+        
+        {error && (
+          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded border border-red-300">
+            {error}
+          </div>
+        )}
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -82,27 +100,32 @@ const AdminSignUpPage = () => {
             />
           </div>
 
-          <div className="flex items-center justify-between text-sm">
-            <label className="inline-flex items-center">
-              <input
-                type="checkbox"
-                name='agree'
-                checked={formData.agree}
-                onChange={handleChange}
-                className="form-checkbox h-4 w-4 text-orange-600 border-gray-300 rounded"
-              />
-              <span className="ml-2 text-gray-700">Remember Me</span>
+          <div className="flex items-center space-x-3">
+            <input
+              type="checkbox"
+              name='agree'
+              checked={formData.agree}
+              onChange={handleChange}
+              className="form-checkbox h-4 w-4 text-orange-600 border-gray-300 rounded"
+            />
+            <label className="text-sm text-gray-700">
+              I agree to the{' '}
+              <a href="#" className="text-orange-600 hover:underline">
+                Terms of Service
+              </a>{' '}
+              and{' '}
+              <a href="#" className="text-orange-600 hover:underline">
+                Privacy Policy
+              </a>
             </label>
-            <a href="#" className="text-orange-500 hover:underline">
-              Forget Password?
-            </a>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-orange-600 text-white font-semibold py-2 rounded-md hover:bg-orange-700 transition duration-200"
+            className="w-full bg-orange-600 text-white font-semibold py-2 rounded-md hover:bg-orange-700 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isLoading}
           >
-            Create Account
+            {isLoading ? "Creating Account..." : "Create Account"}
           </button>
         </form>
 

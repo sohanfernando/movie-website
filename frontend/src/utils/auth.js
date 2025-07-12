@@ -5,6 +5,9 @@ export const logout = (navigate) => {
   localStorage.removeItem("user");
   localStorage.removeItem("admin");
   
+  // Trigger storage event to update navbar
+  window.dispatchEvent(new Event('storage'));
+  
   // Redirect to signin page
   if (navigate) {
     navigate("/");

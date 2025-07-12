@@ -1,15 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../utils/auth";
+import { logout, getUser, getAdmin } from "../utils/auth";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [user, setUser] = useState(null);
+  const [admin, setAdmin] = useState(null);
+
+  useEffect(() => {
+    // Check for user/admin data on component mount and when localStorage changes
+    const checkAuth = () => {
+      setUser(getUser());
+      setAdmin(getAdmin());
+    };
+    
+    checkAuth();
+    
+    // Listen for storage changes
+    window.addEventListener('storage', checkAuth);
+    return () => window.removeEventListener('storage', checkAuth);
+  }, []);
 
   const handleLogout = () => {
     logout(navigate);
   };
+
+  const isAuthenticated = user || admin;
+  const currentUser = user || admin;
 
   // Handle scroll effect
   useEffect(() => {
@@ -30,42 +49,42 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent hover:from-orange-500 hover:to-orange-700 transition-all duration-300">
+          <div className="flex items-center mr-10">
+            <h1 onClick={() => navigate("/")} className="text-3xl cursor-pointer font-bold bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent hover:from-orange-500 hover:to-orange-700 transition-all duration-300">
               MovieHub
             </h1>
           </div>
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-8">
-            <a 
-              href="/home" 
+            <button 
+              onClick={() => navigate("/")}
               className="text-white hover:text-orange-400 font-medium transition-colors duration-200 relative group"
             >
               Home
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-400 group-hover:w-full transition-all duration-300"></span>
-            </a>
-            <a 
-              href="/about" 
+            </button>
+            <button 
+              onClick={() => navigate("/about")}
               className="text-white hover:text-orange-400 font-medium transition-colors duration-200 relative group"
             >
               About Us
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-400 group-hover:w-full transition-all duration-300"></span>
-            </a>
-            <a 
-              href="/movies" 
+            </button>
+            <button 
+              onClick={() => navigate("/movies")}
               className="text-white hover:text-orange-400 font-medium transition-colors duration-200 relative group"
             >
               Movies
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-400 group-hover:w-full transition-all duration-300"></span>
-            </a>
-            <a 
-              href="/genres" 
+            </button>
+            <button 
+              onClick={() => navigate("/genres")}
               className="text-white hover:text-orange-400 font-medium transition-colors duration-200 relative group"
             >
               Genres
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-400 group-hover:w-full transition-all duration-300"></span>
-            </a>
+            </button>
           </div>
 
           {/* Search Bar */}
@@ -98,36 +117,62 @@ export default function Navbar() {
               <span className="absolute -top-1 -right-1 h-3 w-3 bg-orange-500 rounded-full"></span>
             </button>
 
-            {/* Profile */}
-            <div className="relative group">
-              <img
-                src="/images/covers/profile.png"
-                alt="Profile"
-                className="w-10 h-10 rounded-full object-cover border-2 border-white/20 hover:border-orange-400 transition-all duration-200 cursor-pointer"
-              />
-              
-              {/* Profile Dropdown */}
-              <div className="absolute right-0 mt-2 w-48 bg-black/95 backdrop-blur-md border border-white/10 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                <div className="py-2">
-                  <a href="/profile" className="block px-4 py-2 text-white hover:bg-white/10 transition-colors duration-200">
-                    Profile
-                  </a>
-                  <a href="/settings" className="block px-4 py-2 text-white hover:bg-white/10 transition-colors duration-200">
-                    Settings
-                  </a>
-                  <a href="/watchlist" className="block px-4 py-2 text-white hover:bg-white/10 transition-colors duration-200">
-                    Watchlist
-                  </a>
-                  <hr className="border-white/10 my-1" />
-                  <button 
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-red-400 hover:bg-red-500/10 transition-colors duration-200"
-                  >
-                    Logout
-                  </button>
+            {/* Login/Profile */}
+            {isAuthenticated ? (
+              <div className="relative group">
+                <div className="flex items-center space-x-2 cursor-pointer">
+                  <img
+                    src="/images/covers/profile.png"
+                    alt="Profile"
+                    className="w-10 h-10 rounded-full object-cover border-2 border-white/20 hover:border-orange-400 transition-all duration-200"
+                  />
+                  <span className="text-white font-medium hidden sm:block">
+                    {currentUser?.name || currentUser?.adminName || 'User'}
+                  </span>
+                </div>
+                
+                {/* Profile Dropdown */}
+                <div className="absolute right-0 mt-2 w-48 bg-black/95 backdrop-blur-md border border-white/10 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                  <div className="py-2">
+                    <div className="px-4 py-2 text-white border-b border-white/10">
+                      <div className="font-medium">{currentUser?.name || currentUser?.adminName}</div>
+                      <div className="text-sm text-gray-400">{currentUser?.email || currentUser?.adminEmail}</div>
+                    </div>
+                    <a href="/profile" className="block px-4 py-2 text-white hover:bg-white/10 transition-colors duration-200">
+                      Profile
+                    </a>
+                    <a href="/settings" className="block px-4 py-2 text-white hover:bg-white/10 transition-colors duration-200">
+                      Settings
+                    </a>
+                    <a href="/watchlist" className="block px-4 py-2 text-white hover:bg-white/10 transition-colors duration-200">
+                      Watchlist
+                    </a>
+                    <hr className="border-white/10 my-1" />
+                    <button 
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-red-400 hover:bg-red-500/10 transition-colors duration-200"
+                    >
+                      Logout
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => navigate("/signin")}
+                  className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200"
+                >
+                  Login
+                </button>
+                <button
+                  onClick={() => navigate("/admin-login")}
+                  className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200"
+                >
+                  Admin
+                </button>
+              </div>
+            )}
 
             {/* Mobile Menu Button */}
             <button className="md:hidden p-2 text-white hover:text-orange-400 transition-colors duration-200">
