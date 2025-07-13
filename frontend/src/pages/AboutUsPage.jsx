@@ -203,11 +203,11 @@ export default function AboutUsPage() {
                   </p>
                   <div className="flex justify-center space-x-4">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-orange-500">2020</div>
+                      <div className="text-2xl font-bold text-orange-500">2024</div>
                       <div className="text-sm text-gray-400">Founded</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-orange-500">2024</div>
+                      <div className="text-2xl font-bold text-orange-500">2025</div>
                       <div className="text-sm text-gray-400">Today</div>
                     </div>
                   </div>

@@ -129,26 +129,26 @@ const AllMoviesPage = () => {
       <div className="pt-20 pb-8 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
               All Movies
             </h1>
-            <p className="text-xl text-gray-400">
+            <p className="text-lg sm:text-xl text-gray-400 px-4">
               Discover and filter through our complete movie collection
             </p>
           </div>
 
           {/* Search Bar */}
-          <div className="max-w-2xl mx-auto mb-8">
+          <div className="max-w-2xl mx-auto mb-8 px-4">
             <div className="relative">
               <input
                 type="text"
                 placeholder="Search movies, directors, or genres..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-6 py-4 pl-12 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+                className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base"
               />
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none">
+                <svg className="h-5 w-5 sm:h-6 sm:w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
@@ -156,8 +156,8 @@ const AllMoviesPage = () => {
           </div>
 
           {/* Filters */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 mb-8">
-            <div className="flex flex-col lg:flex-row gap-6">
+          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 sm:p-6 mb-8 mx-4">
+            <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
               {/* Year Filter */}
               <div className="flex-1">
                 <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -166,7 +166,7 @@ const AllMoviesPage = () => {
                 <select
                   value={selectedYear}
                   onChange={(e) => setSelectedYear(e.target.value)}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base [&>option]:bg-gray-800 [&>option]:text-white [&>option]:hover:bg-gray-700"
                 >
                   <option value="">All Years</option>
                   {years.map(year => (
@@ -185,7 +185,7 @@ const AllMoviesPage = () => {
                 <select
                   value={selectedGenre}
                   onChange={(e) => setSelectedGenre(e.target.value)}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base [&>option]:bg-gray-800 [&>option]:text-white [&>option]:hover:bg-gray-700"
                 >
                   <option value="">All Genres</option>
                   {genres.map(genre => (
@@ -201,7 +201,7 @@ const AllMoviesPage = () => {
                 <button
                   onClick={clearFilters}
                   disabled={getActiveFiltersCount() === 0}
-                  className="px-6 py-3 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed text-white rounded-xl font-medium transition-all duration-200"
+                  className="w-full lg:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed text-white rounded-xl font-medium transition-all duration-200 text-sm sm:text-base"
                 >
                   Clear Filters
                 </button>
@@ -213,17 +213,17 @@ const AllMoviesPage = () => {
               <div className="mt-4 flex flex-wrap gap-2">
                 <span className="text-sm text-gray-400">Active filters:</span>
                 {selectedYear && (
-                  <span className="px-3 py-1 bg-orange-600 text-white text-sm rounded-full">
+                  <span className="px-2 sm:px-3 py-1 bg-orange-600 text-white text-xs sm:text-sm rounded-full">
                     Year: {selectedYear}
                   </span>
                 )}
                 {selectedGenre && (
-                  <span className="px-3 py-1 bg-orange-600 text-white text-sm rounded-full">
+                  <span className="px-2 sm:px-3 py-1 bg-orange-600 text-white text-xs sm:text-sm rounded-full">
                     Genre: {selectedGenre}
                   </span>
                 )}
                 {searchQuery && (
-                  <span className="px-3 py-1 bg-orange-600 text-white text-sm rounded-full">
+                  <span className="px-2 sm:px-3 py-1 bg-orange-600 text-white text-xs sm:text-sm rounded-full">
                     Search: "{searchQuery}"
                   </span>
                 )}
@@ -232,8 +232,8 @@ const AllMoviesPage = () => {
           </div>
 
           {/* Results Count */}
-          <div className="flex justify-between items-center mb-6">
-            <p className="text-gray-400">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 px-4 gap-2">
+            <p className="text-gray-400 text-sm sm:text-base">
               Showing {filteredMovies.length} of {movies.length} movies
             </p>
             {getActiveFiltersCount() > 0 && (
@@ -253,9 +253,9 @@ const AllMoviesPage = () => {
         <div className="max-w-7xl mx-auto">
           {filteredMovies.length === 0 ? (
             <div className="text-center py-16">
-              <div className="text-6xl mb-4">🎬</div>
-              <h3 className="text-2xl font-semibold text-white mb-2">No Movies Found</h3>
-              <p className="text-gray-400 mb-6">
+              <div className="text-4xl sm:text-6xl mb-4">🎬</div>
+              <h3 className="text-xl sm:text-2xl font-semibold text-white mb-2">No Movies Found</h3>
+              <p className="text-gray-400 mb-6 text-sm sm:text-base px-4">
                 {getActiveFiltersCount() > 0 
                   ? "Try adjusting your filters or search terms"
                   : "No movies available at the moment"
@@ -264,14 +264,14 @@ const AllMoviesPage = () => {
               {getActiveFiltersCount() > 0 && (
                 <button
                   onClick={clearFilters}
-                  className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-xl font-medium transition-all duration-200"
+                  className="px-4 sm:px-6 py-2 sm:py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-xl font-medium transition-all duration-200 text-sm sm:text-base"
                 >
                   Clear All Filters
                 </button>
               )}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
               {filteredMovies.map((movie) => (
                 <MovieCard key={movie.id} movie={movie} />
               ))}
