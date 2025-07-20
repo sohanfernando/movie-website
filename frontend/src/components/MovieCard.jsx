@@ -32,11 +32,7 @@ export default function MovieCard({ movie }) {
           alt={movie.movieName}
           className="w-full h-[280px] sm:h-[320px] md:h-[360px] lg:h-[400px] object-cover group-hover:scale-110 transition-transform duration-300"
           onError={(e) => {
-            console.log("Image failed to load:", imageUrl);
             e.target.src = "/images/covers/cover.png";
-          }}
-          onLoad={() => {
-            console.log("Image loaded successfully:", imageUrl);
           }}
         />
         
@@ -48,33 +44,28 @@ export default function MovieCard({ movie }) {
                 <h3 className="font-bold text-sm sm:text-lg mb-1 truncate">{movie.movieName}</h3>
                 <p className="text-xs sm:text-sm text-gray-300">{movie.year}</p>
               </div>
-              <div className="bg-orange-600 text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold ml-2 flex-shrink-0">
-                {movie.movieGenre}
+              <div className="ml-2 flex-shrink-0">
+                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-500/20 text-orange-300 border border-orange-500/30">
+                  {movie.movieGenre}
+                </span>
               </div>
             </div>
           </div>
         </div>
-        
-        {/* Play Button Overlay */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="bg-orange-600 text-white p-3 sm:p-4 rounded-full shadow-lg">
-            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-            </svg>
-          </div>
-        </div>
       </div>
       
-      {/* Movie Info */}
-      <div className="mt-3 sm:mt-4 text-center">
-        <h3 className="font-bold text-white text-sm sm:text-lg mb-1 group-hover:text-orange-400 transition-colors truncate">
+      {/* Movie Info Below Image */}
+      <div className="mt-3 px-1">
+        <h3 className="font-bold text-white text-sm sm:text-base mb-1 truncate">
           {movie.movieName}
         </h3>
-        <div className="flex items-center justify-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-400">
+        <div className="flex items-center justify-between text-xs sm:text-sm text-gray-400">
           <span>{movie.year}</span>
-          <span>•</span>
-          <span className="truncate">{movie.movieGenre}</span>
+          <span>{movie.duration}</span>
         </div>
+        <p className="text-xs sm:text-sm text-gray-500 mt-1 line-clamp-2">
+          {movie.movieDescription}
+        </p>
       </div>
     </div>
   );

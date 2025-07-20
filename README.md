@@ -2,6 +2,22 @@
 
 A modern, responsive movie website built with React frontend and Spring Boot backend, featuring user authentication, movie management, and a beautiful dark theme UI.
 
+## 🚀 Recent Improvements
+
+### Security Enhancements
+- ✅ **Secure File Upload**: Added file type validation, size limits, and filename sanitization
+- ✅ **Input Validation**: Comprehensive validation on all API endpoints
+- ✅ **Custom Exception Handling**: Proper error responses with structured error messages
+- ✅ **Environment Configuration**: Externalized configuration with environment variables
+- ✅ **CORS Security**: Properly configured cross-origin resource sharing
+
+### Code Quality Improvements
+- ✅ **Global Exception Handler**: Centralized error handling with proper HTTP status codes
+- ✅ **API Documentation**: Added Swagger/OpenAPI documentation
+- ✅ **Toast Notifications**: Replaced alert() calls with modern toast notifications
+- ✅ **Centralized API Service**: Improved error handling and request interceptors
+- ✅ **Removed Debug Code**: Cleaned up console.log statements and debug code
+
 ## 🎬 Features
 
 ### Frontend (React)
@@ -11,32 +27,38 @@ A modern, responsive movie website built with React frontend and Spring Boot bac
 - **Movie Browsing**: Browse all movies with search and filters
 - **Movie Details**: Detailed movie information pages
 - **Admin Dashboard**: Movie management (CRUD operations)
-- **Mobile Menu**: Hamburger menu for mobile devices
-- **Search & Filters**: Search movies by name, director, genre and filter by year/genre
+- **Toast Notifications**: Modern notification system
+- **Error Handling**: Comprehensive error handling with user-friendly messages
 
 ### Backend (Spring Boot)
 - **RESTful API**: Complete REST API for movie management
+- **Input Validation**: Comprehensive validation with custom error messages
+- **Secure File Upload**: File type validation and size limits
 - **User Management**: User registration, login, and authentication
 - **Admin System**: Admin registration and authentication
-- **File Upload**: Movie cover image upload functionality
+- **Global Exception Handling**: Structured error responses
+- **API Documentation**: Swagger/OpenAPI documentation
 - **Database**: MySQL/PostgreSQL database integration
-- **CORS Configuration**: Cross-origin resource sharing setup
+- **Environment Configuration**: Externalized configuration
 
 ## 🚀 Tech Stack
 
 ### Frontend
-- **React 18** - UI framework
+- **React 19** - UI framework
 - **Vite** - Build tool and dev server
 - **Tailwind CSS** - Utility-first CSS framework
 - **React Router** - Client-side routing
 - **Axios** - HTTP client for API calls
+- **Context API** - State management for notifications
 
 ### Backend
 - **Spring Boot 3** - Java framework
 - **Spring Security** - Authentication and authorization
 - **Spring Data JPA** - Database operations
+- **Spring Validation** - Input validation
 - **MySQL/PostgreSQL** - Database
 - **Maven** - Build tool and dependency management
+- **SpringDoc OpenAPI** - API documentation
 
 ## 📁 Project Structure
 
@@ -46,222 +68,226 @@ movie-project/
 │   ├── src/
 │   │   ├── components/      # Reusable components
 │   │   ├── pages/          # Page components
+│   │   ├── contexts/       # React contexts
 │   │   ├── utils/          # Utility functions
 │   │   └── main.jsx        # App entry point
-│   ├── public/             # Static assets
-│   └── package.json        # Frontend dependencies
+│   ├── package.json
+│   └── vite.config.js
 ├── backend/                 # Spring Boot backend
-│   ├── src/main/java/
-│   │   └── com/example/moviewebsite/
-│   │       ├── controller/ # REST controllers
-│   │       ├── service/    # Business logic
-│   │       ├── repository/ # Data access layer
-│   │       ├── model/      # Entity classes
-│   │       └── config/     # Configuration classes
-│   ├── src/main/resources/ # Configuration files
-│   └── pom.xml            # Backend dependencies
-└── README.md              # This file
+│   ├── src/
+│   │   ├── main/java/com/example/moviewebsite/
+│   │   │   ├── controller/ # REST controllers
+│   │   │   ├── service/    # Business logic
+│   │   │   ├── repository/ # Data access
+│   │   │   ├── model/      # Entity classes
+│   │   │   ├── exception/  # Custom exceptions
+│   │   │   └── config/     # Configuration classes
+│   │   └── resources/
+│   │       └── application.properties
+│   ├── pom.xml
+│   └── .env.example
+└── README.md
 ```
 
-## 🛠️ Installation & Setup
+## 🛠️ Setup Instructions
 
 ### Prerequisites
-- **Node.js** (v16 or higher)
-- **Java** (JDK 17 or higher)
-- **MySQL** or **PostgreSQL** database
-- **Maven** (for backend)
+- **Java 21** or higher
+- **Node.js 18** or higher
+- **MySQL 8** or higher
+- **Maven 3.6** or higher
 
 ### Backend Setup
 
-1. **Navigate to backend directory**:
+1. **Clone the repository**
    ```bash
-   cd backend
+   git clone <repository-url>
+   cd movie-project/backend
    ```
 
-2. **Configure database**:
-   - Edit `src/main/resources/application.properties`
-   - Update database URL, username, and password
+2. **Database Setup**
+   ```sql
+   CREATE DATABASE movieDB;
+   CREATE USER 'movieuser'@'localhost' IDENTIFIED BY 'secure_password';
+   GRANT ALL PRIVILEGES ON movieDB.* TO 'movieuser'@'localhost';
+   FLUSH PRIVILEGES;
+   ```
 
-3. **Run the backend**:
+3. **Environment Configuration**
    ```bash
-   # Using Maven wrapper
-   ./mvnw spring-boot:run
-   
-   # Or using Maven
+   cp .env.example .env
+   # Edit .env file with your database credentials
+   ```
+
+4. **Install Dependencies and Run**
+   ```bash
+   mvn clean install
    mvn spring-boot:run
    ```
 
-   The backend will start on `http://localhost:8080`
+   The backend will start at `http://localhost:8080`
+
+5. **API Documentation**
+   Visit `http://localhost:8080/swagger-ui.html` for interactive API documentation
 
 ### Frontend Setup
 
-1. **Navigate to frontend directory**:
+1. **Navigate to frontend directory**
    ```bash
-   cd frontend
+   cd ../frontend
    ```
 
-2. **Install dependencies**:
+2. **Install Dependencies**
    ```bash
    npm install
    ```
 
-3. **Start development server**:
+3. **Start Development Server**
    ```bash
    npm run dev
    ```
 
-   The frontend will start on `http://localhost:5173`
+   The frontend will start at `http://localhost:5173`
 
-## 🎯 Usage
+## 🔧 Environment Variables
 
-### For Users
-1. **Browse Movies**: Visit the home page to see featured movies
-2. **Search & Filter**: Use the search bar and filters on the Movies page
-3. **View Details**: Click on any movie to see detailed information
-4. **Create Account**: Sign up to access additional features
-5. **Login**: Use your credentials to log in
+Create a `.env` file in the backend directory:
 
-### For Admins
-1. **Admin Login**: Use admin credentials to access admin panel
-2. **Manage Movies**: Add, edit, or delete movies
-3. **Upload Images**: Upload movie cover images
-4. **View All Movies**: See all movies in the admin dashboard
-
-## 📱 Mobile Responsiveness
-
-The website is fully responsive and optimized for:
-- **Mobile phones** (320px+)
-- **Tablets** (768px+)
-- **Laptops** (1024px+)
-- **Desktop** (1280px+)
-
-### Mobile Features
-- **Hamburger Menu**: Collapsible navigation menu
-- **Touch-Friendly**: Optimized for touch interactions
-- **Responsive Grid**: Adaptive movie grid layout
-- **Mobile Search**: Optimized search experience
-
-## 🎨 UI Components
-
-### Navigation
-- **Responsive Navbar**: Logo, navigation links, search, user menu
-- **Mobile Menu**: Hamburger menu with full navigation
-- **User Dropdown**: Profile information and logout
-
-### Movie Components
-- **MovieCard**: Individual movie display with hover effects
-- **MovieDetails**: Detailed movie information page
-- **MovieSection**: Grid layout for multiple movies
-
-### Forms
-- **Search Bar**: Global search functionality
-- **Filters**: Year and genre filtering
-- **Login/Signup**: User authentication forms
-
-## 🔧 Configuration
-
-### Backend Configuration
-Edit `backend/src/main/resources/application.properties`:
-
-```properties
+```env
 # Database Configuration
-spring.datasource.url=jdbc:mysql://localhost:3306/moviehub
-spring.datasource.username=your_username
-spring.datasource.password=your_password
+DB_URL=jdbc:mysql://localhost:3306/movieDB
+DB_USERNAME=movieuser
+DB_PASSWORD=your_secure_password
+
+# Security Configuration
+JWT_SECRET=your_very_long_and_secure_jwt_secret_key_here
+JWT_EXPIRATION=86400000
 
 # File Upload Configuration
-spring.servlet.multipart.max-file-size=10MB
-spring.servlet.multipart.max-request-size=10MB
+MAX_FILE_SIZE=10MB
+UPLOAD_DIR=uploads
 
 # CORS Configuration
-cors.allowed-origins=http://localhost:5173
+CORS_ORIGINS=http://localhost:5173,http://localhost:5174
 ```
 
-### Frontend Configuration
-Edit `frontend/src/utils/auth.js` for API endpoints:
+## 🔒 Security Features
 
-```javascript
-const API_BASE_URL = 'http://localhost:8080';
-```
+### File Upload Security
+- File type validation (only images allowed)
+- File size limits (configurable)
+- Filename sanitization
+- Path traversal protection
 
-## 🚀 Deployment
+### Input Validation
+- Email format validation
+- Password strength requirements
+- Movie data validation
+- Custom validation messages
 
-### Backend Deployment
-1. **Build the JAR**:
-   ```bash
-   cd backend
-   ./mvnw clean package
-   ```
+### Error Handling
+- Structured error responses
+- No sensitive information leakage
+- Proper HTTP status codes
+- Validation error details
 
-2. **Run the JAR**:
-   ```bash
-   java -jar target/moviewebsite-0.0.1-SNAPSHOT.jar
-   ```
+## 📚 API Endpoints
 
-### Frontend Deployment
-1. **Build for production**:
-   ```bash
-   cd frontend
-   npm run build
-   ```
+### Authentication
+- `POST /users/signup` - User registration
+- `POST /users/login` - User login
+- `POST /admins/admin-signup` - Admin registration
+- `POST /admins/admin-login` - Admin login
 
-2. **Deploy the `dist` folder** to your web server
+### Movies
+- `GET /movies` - Get all movies
+- `GET /movies/{name}` - Get movie by name
+- `GET /movies/id/{id}` - Get movie by ID
+- `POST /movies` - Create movie (Admin)
+- `PUT /movies/{id}` - Update movie (Admin)
+- `DELETE /movies/{id}` - Delete movie (Admin)
+
+### File Upload
+- `POST /upload` - Upload movie cover image
 
 ## 🧪 Testing
 
 ### Backend Tests
 ```bash
 cd backend
-./mvnw test
+mvn test
 ```
 
 ### Frontend Tests
 ```bash
 cd frontend
-npm test
+npm run test
 ```
 
-## 📝 API Endpoints
+## 🚀 Deployment
 
-### Authentication
-- `POST /users/register` - User registration
-- `POST /users/login` - User login
-- `POST /admins/register` - Admin registration
-- `POST /admins/login` - Admin login
+### Production Environment Variables
+```env
+DB_URL=jdbc:mysql://your-production-db:3306/movieDB
+DB_USERNAME=your_prod_user
+DB_PASSWORD=your_very_secure_password
+JWT_SECRET=your_production_jwt_secret_key_minimum_256_bits
+LOG_LEVEL=WARN
+SHOW_SQL=false
+DDL_AUTO=validate
+```
 
-### Movies
-- `GET /movies` - Get all movies
-- `GET /movies/{id}` - Get movie by ID
-- `POST /movies` - Create new movie (Admin only)
-- `PUT /movies/{id}` - Update movie (Admin only)
-- `DELETE /movies/{id}` - Delete movie (Admin only)
-
-### File Upload
-- `POST /upload` - Upload movie cover image
+### Docker Deployment (Optional)
+```dockerfile
+# Dockerfile for backend
+FROM openjdk:21-jre-slim
+COPY target/movie-website-0.0.1-SNAPSHOT.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/app.jar"]
+```
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 📄 License
+## 📝 License
 
 This project is licensed under the MIT License.
 
-## 👨‍💻 Author
+## 🔍 Troubleshooting
 
-Created by [Your Name]
+### Common Issues
 
-## 🙏 Acknowledgments
+1. **Database Connection Error**
+   - Check MySQL service is running
+   - Verify database credentials in .env file
+   - Ensure database exists
 
-- React team for the amazing framework
-- Spring Boot team for the robust backend framework
-- Tailwind CSS for the utility-first CSS framework
-- All contributors and testers
+2. **File Upload Issues**
+   - Check upload directory permissions
+   - Verify file size limits
+   - Ensure allowed file types
+
+3. **CORS Issues**
+   - Verify CORS_ORIGINS environment variable
+   - Check frontend URL matches CORS configuration
+
+4. **Build Issues**
+   - Ensure Java 21 is installed
+   - Run `mvn clean install` to resolve dependencies
+   - Check for port conflicts (8080, 5173)
+
+## 📞 Support
+
+For support and questions:
+- Create an issue on GitHub
+- Check the API documentation at `/swagger-ui.html`
+- Review the troubleshooting section above
 
 ---
 
-**Happy coding! 🎬✨** 
+**Note**: This application includes significant security improvements and is much closer to production-ready than the original version. However, for production deployment, consider additional security measures such as JWT authentication, rate limiting, and comprehensive logging. 
