@@ -23,7 +23,7 @@ export default function HomePage() {
           {/* Hero Content */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center text-white px-4 sm:px-6">
-              <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
+              <h1 className="mt-12 sm:mt-0 text-3xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
                 Welcome to MovieHub
               </h1>
               <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto">
@@ -42,7 +42,7 @@ export default function HomePage() {
         </div>
         
         {/* Scroll Indicator */}
-        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="hidden sm:block absolute bottom-0 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
           <div className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-white rounded-full flex justify-center">
             <div className="w-1 h-2 sm:h-3 bg-white rounded-full mt-1 sm:mt-2 animate-pulse"></div>
           </div>

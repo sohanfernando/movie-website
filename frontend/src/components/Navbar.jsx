@@ -57,7 +57,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <h1 onClick={() => navigate("/")} className="text-2xl sm:text-3xl cursor-pointer font-bold bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent hover:from-orange-500 hover:to-orange-700 transition-all duration-300">
+            <h1 onClick={() => navigate("/")} className="text-2xl sm:text-3xl pr-12 cursor-pointer font-bold bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent hover:from-orange-500 hover:to-orange-700 transition-all duration-300">
               MovieHub
             </h1>
           </div>
@@ -72,13 +72,6 @@ export default function Navbar() {
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-400 group-hover:w-full transition-all duration-300"></span>
             </button>
             <button 
-              onClick={() => navigate("/about")}
-              className="text-white hover:text-orange-400 font-medium transition-colors duration-200 relative group"
-            >
-              About Us
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-400 group-hover:w-full transition-all duration-300"></span>
-            </button>
-            <button 
               onClick={() => navigate("/movies")}
               className="text-white hover:text-orange-400 font-medium transition-colors duration-200 relative group"
             >
@@ -86,22 +79,29 @@ export default function Navbar() {
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-400 group-hover:w-full transition-all duration-300"></span>
             </button>
             <button 
-              onClick={() => navigate("/genres")}
+              onClick={() => navigate("/trending")}
               className="text-white hover:text-orange-400 font-medium transition-colors duration-200 relative group"
             >
-              Genres
+              Trending
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-400 group-hover:w-full transition-all duration-300"></span>
+            </button>
+            <button 
+              onClick={() => navigate("/about")}
+              className="text-white hover:text-orange-400 font-medium transition-colors duration-200 relative group"
+            >
+              About Us
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-400 group-hover:w-full transition-all duration-300"></span>
             </button>
           </div>
 
           {/* Desktop Search Bar */}
-          <div className="flex-1 max-w-md mx-8 hidden lg:block">
+          <div className="flex-1 max-w-xs mx-4 hidden lg:block">
             <div className={`relative transition-all duration-300 ${
               isSearchFocused ? 'scale-105' : 'scale-100'
             }`}>
               <input
                 type="text"
-                placeholder="Search movies, genres, actors..."
+                placeholder="Search"
                 className="w-full px-4 py-2 pl-10 pr-4 rounded-full bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
                 onFocus={() => setIsSearchFocused(true)}
                 onBlur={() => setIsSearchFocused(false)}
@@ -239,10 +239,10 @@ export default function Navbar() {
                   Movies
                 </button>
                 <button 
-                  onClick={() => { navigate("/genres"); setIsMobileMenuOpen(false); }}
+                  onClick={() => { navigate("/trending"); setIsMobileMenuOpen(false); }}
                   className="w-full text-left px-4 py-3 text-white hover:bg-white/10 rounded-lg font-medium transition-colors duration-200"
                 >
-                  Genres
+                  Trending
                 </button>
               </div>
             </div>

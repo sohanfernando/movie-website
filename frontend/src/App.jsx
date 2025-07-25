@@ -11,6 +11,7 @@ import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminMovieListPage from "./pages/AdminMovieListPage";
 import AdminMovieEditPage from "./pages/AdminMovieEditPage";
 import AllMoviesPage from "./pages/AllMoviesPage";
+import TrendingPage from "./pages/TrendingPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { logout } from "./utils/auth";
 
@@ -34,6 +35,7 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/movies" element={<AllMoviesPage />} />
+        <Route path="/trending" element={<TrendingPage />} />
         <Route path="/movie/:id" element={<MovieDetailsPage />} />
         <Route path="/about" element={<AboutUsPage />} />
         <Route path="/admin-signup" element={<AdminSignUpPage />} />
